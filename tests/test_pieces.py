@@ -213,3 +213,33 @@ class TestPawns:
 
         # Assert
         assert Square.at(4, 4) not in moves
+
+    @staticmethod
+    def test_white_pawn_cannot_move_at_top_of_board():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        square = Square.at(7, 4)
+        board.set_piece(square, pawn)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert len(moves) == 0
+
+    @staticmethod
+    def test_black_pawn_cannot_move_at_bottom_of_board():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        square = Square.at(0, 4)
+        board.set_piece(square, pawn)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert len(moves) == 0
