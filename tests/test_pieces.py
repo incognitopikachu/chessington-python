@@ -243,3 +243,91 @@ class TestPawns:
 
         # Assert
         assert len(moves) == 0
+
+    @staticmethod
+    def test_white_pawns_can_capture_diagonally():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        pawn_square = Square.at(3, 4)
+        board.set_piece(pawn_square, pawn)
+
+        enemy1 = Pawn(Player.BLACK)
+        enemy1_square = Square.at(4, 5)
+        board.set_piece(enemy1_square, enemy1)
+
+        enemy2 = Pawn(Player.BLACK)
+        enemy2_square = Square.at(4, 3)
+        board.set_piece(enemy2_square, enemy2)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert enemy1_square in moves
+        assert enemy2_square in moves
+
+    @staticmethod
+    def test_black_pawns_can_capture_diagonally():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        pawn_square = Square.at(3, 4)
+        board.set_piece(pawn_square, pawn)
+
+        enemy1 = Pawn(Player.WHITE)
+        enemy1_square = Square.at(2, 5)
+        board.set_piece(enemy1_square, enemy1)
+
+        enemy2 = Pawn(Player.WHITE)
+        enemy2_square = Square.at(2, 3)
+        board.set_piece(enemy2_square, enemy2)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert enemy1_square in moves
+        assert enemy2_square in moves
+
+    @staticmethod
+    def test_white_pawns_cannot_move_diagonally_except_to_capture():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        pawn_square = Square.at(3, 4)
+        board.set_piece(pawn_square, pawn)
+
+        friendly = Pawn(Player.WHITE)
+        friendly_square = Square.at(4, 5)
+        board.set_piece(friendly_square, friendly)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert Square.at(4, 3) not in moves
+        assert Square.at(4, 5) not in moves
+
+    @staticmethod
+    def test_black_pawns_can_capture_diagonally():
+
+         # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        pawn_square = Square.at(3, 4)
+        board.set_piece(pawn_square, pawn)
+
+        friendly = Pawn(Player.BLACK)
+        friendly_square = Square.at(2, 5)
+        board.set_piece(friendly_square, friendly)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert Square.at(2, 3) not in moves
+        assert Square.at(2, 5) not in moves
