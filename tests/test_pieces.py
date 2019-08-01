@@ -99,3 +99,117 @@ class TestPawns:
 
         # Assert
         assert Square.at(3, 4) not in moves
+
+    @staticmethod
+    def test_white_pawn_cannot_move_if_piece_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        pawn_square = Square.at(4, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(5, 4)
+        obstruction = Pawn(Player.BLACK)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert len(moves) == 0
+
+    @staticmethod
+    def test_black_pawn_cannot_move_if_piece_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        pawn_square = Square.at(4, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(3, 4)
+        obstruction = Pawn(Player.WHITE)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert len(moves) == 0
+
+    @staticmethod
+    def test_white_pawn_cannot_move_two_squares_if_piece_two_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        pawn_square = Square.at(4, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(6, 4)
+        obstruction = Pawn(Player.BLACK)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert obstructing_square not in moves
+
+    @staticmethod
+    def test_black_pawn_cannot_move_two_squares_if_piece_two_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        pawn_square = Square.at(4, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(2, 4)
+        obstruction = Pawn(Player.WHITE)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert obstructing_square not in moves
+
+    @staticmethod
+    def test_white_pawn_cannot_move_two_squares_if_piece_one_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        pawn_square = Square.at(1, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(2, 4)
+        obstruction = Pawn(Player.BLACK)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert Square.at(3, 4) not in moves
+
+    @staticmethod
+    def test_black_pawn_cannot_move_two_squares_if_piece_one_in_front():
+
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.BLACK)
+        pawn_square = Square.at(6, 4)
+        board.set_piece(pawn_square, pawn)
+
+        obstructing_square = Square.at(5, 4)
+        obstruction = Pawn(Player.WHITE)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = pawn.get_available_moves(board)
+
+        # Assert
+        assert Square.at(4, 4) not in moves
