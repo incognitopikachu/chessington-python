@@ -111,8 +111,32 @@ class Rook(Piece):
     """
 
     def get_available_moves(self, board):
-        return []
+        current_pos = board.find_piece(self)
+        moveList = []
 
+        vectors = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        for vector in vectors:
+            moveList = self.addDirection(board, vector, moveList)
+
+        return moveList
+
+    def addDirection(self, board, vector, moveList):
+        new_square = board.find_piece(self)
+        while True:
+            new_square = new_square.applyVector(vector)
+
+            if not new_square.squareOnBoard():
+                return moveList
+
+            if new_square.isEmpty(board):
+                moveList.append(new_square)
+            else:
+                otherPiece = board.get_piece(new_square)
+                if otherPiece.player != self.player:
+                    moveList.append(new_square)
+                    return moveList
+                else:
+                    return moveList
 
 class Queen(Piece):
     """

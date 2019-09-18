@@ -33,6 +33,10 @@ class Square(namedtuple('Square', 'row col')):
         else:
             return False
 
+    def applyVector(self, vector):
+        row = self.row + vector[0]
+        col = self.col + vector[1]
+        return Square(row=row, col=col)
 
     @staticmethod
     def at(row, col):

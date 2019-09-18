@@ -1,6 +1,87 @@
 from chessington.engine.board import Board
 from chessington.engine.data import Player, Square
-from chessington.engine.pieces import Pawn
+from chessington.engine.pieces import Pawn, Rook
+
+class TestRooks:
+
+    @staticmethod
+    def test_white_rook_can_move_up_one_square():
+        # Arrange
+        board = Board.empty()
+        rook = Rook(Player.WHITE)
+        square = Square.at(1, 4)
+        board.set_piece(square, rook)
+
+        # Act
+        moves = rook.get_available_moves(board)
+
+        # Assert
+        assert Square.at(2, 4) in moves
+
+    @staticmethod
+    def test_white_rook_cannot_move_up_if_pawn_is_adjacent():
+        # Arrange
+        board = Board.empty()
+        rook = Rook(Player.WHITE)
+        square = Square.at(4, 4)
+        board.set_piece(square, rook)
+
+        obstructing_square = Square.at(5, 4)
+        obstruction = Pawn(Player.WHITE)
+        board.set_piece(obstructing_square, obstruction)
+
+        # Act
+        moves = rook.get_available_moves(board)
+
+        # Assert
+        assert Square.at(5, 4) not in moves
+
+        @staticmethod
+        def test_white_rook_can_capture():
+            # Arrange
+            board = Board.empty()
+            rook = Rook(Player.WHITE)
+            square = Square.at(4, 4)
+            board.set_piece(square, rook)
+
+            obstructing_square = Square.at(5, 4)
+            obstruction = Pawn(Player.BLACK)
+            board.set_piece(obstructing_square, obstruction)
+
+            # Act
+            moves = rook.get_available_moves(board)
+
+            # Assert
+            assert Square.at(5, 4) in moves
+            assert Square.at(6, 4) not in moves
+
+    @staticmethod
+    def test_white_rook_can_move_multiple_squares():
+        # Arrange
+        board = Board.empty()
+        rook = Rook(Player.WHITE)
+        square = Square.at(1, 4)
+        board.set_piece(square, rook)
+
+        # Act
+        moves = rook.get_available_moves(board)
+
+        # Assert
+        assert Square.at(5, 4) in moves
+
+    @staticmethod
+    def test_white_rook_can_move_multiple_squares_horizonally():
+        # Arrange
+        board = Board.empty()
+        rook = Rook(Player.WHITE)
+        square = Square.at(4, 4)
+        board.set_piece(square, rook)
+
+        # Act
+        moves = rook.get_available_moves(board)
+
+        # Assert
+        assert Square.at(4, 6) in moves
 
 class TestPawns:
 
