@@ -59,7 +59,10 @@ class Board:
         """
         Retrieves the piece from the given square of the board.
         """
-        return self.board[square.row][square.col]
+        if square.squareOnBoard():
+            return self.board[square.row][square.col]
+        else:
+            return  None
 
     def find_piece(self, piece_to_find):
         """

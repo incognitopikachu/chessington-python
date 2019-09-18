@@ -53,10 +53,10 @@ class Pawn(Piece):
         moveList = []
 
         if next_square.squareOnBoard():
-            if board.get_piece(next_square) is None:
+            if board.get_piece(next_square) is None: # next square free
                 moveList.append(next_square)
 
-            if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
+        if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
                 moveList.append(second_square)
 
         return moveList
