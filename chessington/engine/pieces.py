@@ -31,16 +31,15 @@ class Piece(ABC):
     def position(self, board):
         return board.find_piece(self)
 
-    def get_linear_moves(self, board, vectors, isKing = False):
-        current_pos = board.find_piece(self)
+    def get_linear_moves(self, board, vectors, isKingOrKnight = False):
         moveList = []
 
         for vector in vectors:
-            moveList = self.addDirection(board, vector, moveList, isKing)
+            moveList = self.addDirection(board, vector, moveList, isKingOrKnight)
 
         return moveList
 
-    def addDirection(self, board, vector, moveList, isKing = False):
+    def addDirection(self, board, vector, moveList, isKingOrKnight = False):
         new_square = board.find_piece(self)
         while True:
             new_square = new_square.applyVector(vector)
@@ -50,7 +49,7 @@ class Piece(ABC):
 
             if new_square.isEmpty(board):
                 moveList.append(new_square)
-                if isKing:
+                if isKingOrKnight:
                     return moveList
             else:
                 otherPiece = board.get_piece(new_square)
@@ -65,6 +64,7 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
+
     def GetPotentialCaptureSquares(self, direction, current_pos, board):
         potentialCaptureSquares = []
         rightDiagonal = Square.at(current_pos.row + direction, current_pos.col + 1)
@@ -123,6 +123,12 @@ class Knight(Piece):
 
     def get_available_moves(self, board):
         return []
+    vectors = [[1, 2], [1, -2], [-1, 2], [-1, -2], [2, 1], [2, -1], [-2, 1], [-2, -1]]
+
+    def get_available_moves(self, board):
+        isKnight = True
+        moveList = self.get_linear_moves(board, self.vectors, isKnight)
+        return moveList
 
 
 class Bishop(Piece):
@@ -168,4 +174,5 @@ class King(Piece):
     def get_available_moves(self, board):
         isKing = True
         moveList = self.get_linear_moves(board, self.vectors, isKing)
+        # todo need to stop king going into check
         return moveList
