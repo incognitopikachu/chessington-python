@@ -21,6 +21,11 @@ class Square(namedtuple('Square', 'row col')):
     """
     An immutable pair (row, col) representing the coordinates of a square.
     """
+    def squareOnBoard(self):
+        if -1 < self.row < 8 and -1 < self.col < 8:
+            return True
+        else:
+            return False
 
     @staticmethod
     def at(row, col):

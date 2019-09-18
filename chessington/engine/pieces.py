@@ -31,6 +31,7 @@ class Piece(ABC):
     def position(self, board):
         return board.find_piece(self)
 
+
 class Pawn(Piece):
     """
     A class representing a chess pawn.
@@ -50,10 +51,13 @@ class Pawn(Piece):
         second_square = Square.at(current_pos.row + 2 * direction, current_pos.col)
 
         moveList = []
-        if board.get_piece(next_square) is None:
-            moveList.append(next_square)
-        if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
-            moveList.append(second_square)
+
+        if next_square.squareOnBoard():
+            if board.get_piece(next_square) is None:
+                moveList.append(next_square)
+
+            if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
+                moveList.append(second_square)
 
         return moveList
 
