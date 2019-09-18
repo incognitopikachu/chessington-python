@@ -46,11 +46,14 @@ class Pawn(Piece):
 
         current_pos = board.find_piece(self)
 
-        moveList = []
-        moveList.append(Square.at(current_pos.row + direction, current_pos.col))
+        next_square = Square.at(current_pos.row + direction, current_pos.col)
+        second_square = Square.at(current_pos.row + 2 * direction, current_pos.col)
 
-        if current_pos.row == start_row:
-            moveList.append(Square.at(current_pos.row + 2 * direction, current_pos.col))
+        moveList = []
+        if board.get_piece(next_square) is None:
+            moveList.append(next_square)
+        if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
+            moveList.append(second_square)
 
         return moveList
 
