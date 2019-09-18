@@ -27,6 +27,13 @@ class Square(namedtuple('Square', 'row col')):
         else:
             return False
 
+    def isEmpty(self, board):
+        if board.get_piece(self) == None:
+            return True
+        else:
+            return False
+
+
     @staticmethod
     def at(row, col):
         """

@@ -36,6 +36,27 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
+    def GetPotentialCaptureSquares(self, direction, current_pos, board):
+        potentialCaptureSquares = []
+        rightDiagonal = Square.at(current_pos.row + direction, current_pos.col + 1)
+        if rightDiagonal.squareOnBoard():
+            potentialCaptureSquares.append(rightDiagonal)
+        leftDiagonal = Square.at(current_pos.row + direction, current_pos.col - 1)
+        if leftDiagonal.squareOnBoard():
+            potentialCaptureSquares.append(leftDiagonal)
+
+        return potentialCaptureSquares
+
+    def ValidateCaptureSquares(self, listOfSquares, board):
+        CaptureSquares = []
+        for square in listOfSquares:
+
+            if square.isEmpty(board) == False:
+                piece = board.get_piece(square)
+                if self.player != piece.player:
+                    CaptureSquares.append(square)
+
+        return CaptureSquares
 
     def get_available_moves(self, board):
         if self.player == Player.WHITE:
@@ -46,21 +67,25 @@ class Pawn(Piece):
             start_row = 6
 
         current_pos = board.find_piece(self)
-
-        next_square = Square.at(current_pos.row + direction, current_pos.col)
-        second_square = Square.at(current_pos.row + 2 * direction, current_pos.col)
-
-        moveList = []
-
-        if next_square.squareOnBoard():
-            if board.get_piece(next_square) is None: # next square free
-                moveList.append(next_square)
-
-        if board.get_piece(next_square) is None and board.get_piece(second_square) is None and current_pos.row == start_row:
-                moveList.append(second_square)
+        fowardMoveList = self.FowardMoves(board, current_pos, direction, start_row)
+        captureSquares = self.GetPotentialCaptureSquares(direction, current_pos, board)
+        captureSquares =  self.ValidateCaptureSquares(captureSquares, board)
+        moveList = fowardMoveList + captureSquares
 
         return moveList
 
+
+    def FowardMoves(self, board, current_pos, direction,  start_row):
+        moveList = []
+        next_square = Square.at(current_pos.row + direction, current_pos.col)
+        second_square = Square.at(current_pos.row + 2 * direction, current_pos.col)
+        if next_square.squareOnBoard():
+            if board.get_piece(next_square) is None:  # next square free
+                moveList.append(next_square)
+        if board.get_piece(next_square) is None and board.get_piece(
+                second_square) is None and current_pos.row == start_row:
+            moveList.append(second_square)
+        return moveList
 
 class Knight(Piece):
     """
