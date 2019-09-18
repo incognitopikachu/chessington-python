@@ -31,6 +31,35 @@ class Piece(ABC):
     def position(self, board):
         return board.find_piece(self)
 
+    def get_linear_moves(self, board, vectors, isKing = False):
+        current_pos = board.find_piece(self)
+        moveList = []
+
+        for vector in vectors:
+            moveList = self.addDirection(board, vector, moveList, isKing)
+
+        return moveList
+
+    def addDirection(self, board, vector, moveList, isKing = False):
+        new_square = board.find_piece(self)
+        while True:
+            new_square = new_square.applyVector(vector)
+
+            if not new_square.squareOnBoard():
+                return moveList
+
+            if new_square.isEmpty(board):
+                moveList.append(new_square)
+                if isKing:
+                    return moveList
+            else:
+                otherPiece = board.get_piece(new_square)
+                if otherPiece.player != self.player:
+                    moveList.append(new_square)
+                    return moveList
+                else:
+                    return moveList
+
 
 class Pawn(Piece):
     """
@@ -100,57 +129,43 @@ class Bishop(Piece):
     """
     A class representing a chess bishop.
     """
+    vectors = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
 
     def get_available_moves(self, board):
-        return []
+        moveList = self.get_linear_moves(board, self.vectors)
+        return moveList
 
 
 class Rook(Piece):
     """
     A class representing a chess rook.
     """
+    vectors = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
 
     def get_available_moves(self, board):
-        current_pos = board.find_piece(self)
-        moveList = []
-
-        vectors = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-        for vector in vectors:
-            moveList = self.addDirection(board, vector, moveList)
+        moveList = self.get_linear_moves(board, self.vectors)
 
         return moveList
-
-    def addDirection(self, board, vector, moveList):
-        new_square = board.find_piece(self)
-        while True:
-            new_square = new_square.applyVector(vector)
-
-            if not new_square.squareOnBoard():
-                return moveList
-
-            if new_square.isEmpty(board):
-                moveList.append(new_square)
-            else:
-                otherPiece = board.get_piece(new_square)
-                if otherPiece.player != self.player:
-                    moveList.append(new_square)
-                    return moveList
-                else:
-                    return moveList
 
 class Queen(Piece):
     """
     A class representing a chess queen.
     """
+    vectors = Rook.vectors + Bishop.vectors
 
     def get_available_moves(self, board):
-        return []
+        moveList = self.get_linear_moves(board, self.vectors)
+        return moveList
 
 
 class King(Piece):
     """
     A class representing a chess king.
     """
+    vectors = Queen.vectors
 
     def get_available_moves(self, board):
-        return []
+        isKing = True
+        moveList = self.get_linear_moves(board, self.vectors, isKing)
+        return moveList
