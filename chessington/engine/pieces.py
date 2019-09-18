@@ -39,13 +39,20 @@ class Pawn(Piece):
     def get_available_moves(self, board):
         if self.player == Player.WHITE:
             direction = 1
+            start_row = 1
         else:
             direction = -1
+            start_row = 6
 
         current_pos = board.find_piece(self)
-        next_square = Square(current_pos.row + direction, current_pos.col)
 
-        return [next_square]
+        moveList = []
+        moveList.append(Square.at(current_pos.row + direction, current_pos.col))
+
+        if current_pos.row == start_row:
+            moveList.append(Square.at(current_pos.row + 2 * direction, current_pos.col))
+
+        return moveList
 
 
 class Knight(Piece):
