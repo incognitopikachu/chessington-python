@@ -429,3 +429,25 @@ class TestPawns:
 
         # Assert
         assert isinstance(piece, Queen)
+
+    @staticmethod
+    def test_black_pawn_can_be_captured_by_en_pessant():
+        # Arrange
+        board = Board.empty()
+
+        pawn1 = Pawn(Player.BLACK) # MAKE BLACK PAWN
+        starting_square1 = Square.at(6, 4)
+        board.set_piece(starting_square1, pawn1)
+
+        pawn2 = Pawn(Player.WHITE) # MAKE WHITE PAWN
+        starting_square2 = Square.at(4, 3)
+        board.set_piece(starting_square1, pawn1)
+
+        intermediate_square = Square.at(4, 4) #move black pawn
+        pawn1.move_to(board, intermediate_square)
+
+        # Act
+        moves = pawn2.get_available_moves(board)
+
+        # Assert
+        assert Square.at(5, 4) in moves

@@ -67,7 +67,10 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
-    # todo add pawn promotion
+    def __init__(self, player):
+        Piece.__init__(self, player)
+        self.enPassant = False
+
     # todo add en pessant
 
     def GetPotentialCaptureSquares(self, direction, current_pos, board):
@@ -125,6 +128,8 @@ class Pawn(Piece):
         Move this piece to the given square on the board.
         """
         current_square = board.find_piece(self)
+        if current_square.row - new_square.row == 2 or -2:
+            self.enPassant = True
         board.move_piece(current_square, new_square)
 
 
