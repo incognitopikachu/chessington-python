@@ -14,6 +14,7 @@ class Piece(ABC):
 
     def __init__(self, player):
         self.player = player
+        self.hasMoved = False
 
     @abstractmethod
     def get_available_moves(self, board):
@@ -71,8 +72,6 @@ class Pawn(Piece):
         Piece.__init__(self, player)
         self.enPassant = False
 
-    # todo add en pessant
-
     def GetPotentialCaptureSquares(self, direction, current_pos, board):
         potentialCaptureSquares = []
         rightDiagonal = Square.at(current_pos.row + direction, current_pos.col + 1)
@@ -107,9 +106,36 @@ class Pawn(Piece):
         fowardMoveList = self.FowardMoves(board, current_pos, direction, start_row)
         captureSquares = self.GetPotentialCaptureSquares(direction, current_pos, board)
         captureSquares =  self.ValidateCaptureSquares(captureSquares, board)
-        moveList = fowardMoveList + captureSquares
+        moveList = fowardMoveList + captureSquares + self.checkEnPessant(board)
 
         return moveList
+
+    def checkEnPessant(self, board):
+
+        lastPiece = board.lastPieceMoved
+
+        if not isinstance(lastPiece, Pawn):
+            return []
+
+        if not lastPiece.enPassant:
+            return []
+
+        current_square = board.find_piece(self)
+        opponent_square = board.find_piece(lastPiece)
+
+        if current_square.row != opponent_square.row:
+            return []
+        if (current_square.col - opponent_square.col) != 1 or -1:
+            return []
+
+        if self.player == Player.WHITE:
+            direction = 1
+        else:
+            direction = -1
+
+        enPessantSquare = Square.at(opponent_square.row + direction, opponent_square.col)
+
+        return [enPessantSquare]
 
     def FowardMoves(self, board, current_pos, direction,  start_row):
         moveList = []

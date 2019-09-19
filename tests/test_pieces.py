@@ -1,6 +1,6 @@
 from chessington.engine.board import Board
 from chessington.engine.data import Player, Square
-from chessington.engine.pieces import Pawn, Rook, Queen
+from chessington.engine.pieces import Pawn, Rook, Queen, King
 
 class TestRooks:
 
@@ -451,3 +451,62 @@ class TestPawns:
 
         # Assert
         assert Square.at(5, 4) in moves
+
+class TestKings:
+
+    @staticmethod
+    def test_white_king_can_move_up_one_square():
+        # Arrange
+        board = Board.empty()
+        king = King(Player.WHITE)
+        square = Square.at(1, 4)
+        board.set_piece(square, king)
+
+        # Act
+        moves = king.get_available_moves(board)
+
+        # Assert
+        assert Square.at(2, 4) in moves
+        assert Square.at(3, 4) not in moves
+
+    @staticmethod
+    def test_white_king_can_castle():
+        # Arrange
+        board = Board.empty()
+        king = King(Player.WHITE)
+        square = Square.at(0, 4)
+        board.set_piece(square, king)
+
+        rook1 = Rook(Player.WHITE)
+        board.set_piece(Square.at(0, 0), rook1)
+
+        rook2 = Rook(Player.WHITE)
+        board.set_piece(Square.at(0, 7), rook2)
+
+        # Act
+        moves = king.get_available_moves(board)
+
+        # Assert
+        assert Square.at(0, 2) in moves
+        assert Square.at(0, 6) in moves
+
+        @staticmethod
+        def test_black_king_can_castle():
+            # Arrange
+            board = Board.empty()
+            king = King(Player.BLACK)
+            square = Square.at(7, 4)
+            board.set_piece(square, king)
+
+            rook1 = Rook(Player.BLACK)
+            board.set_piece(Square.at(7, 0), rook1)
+
+            rook2 = Rook(Player.BLACK)
+            board.set_piece(Square.at(7, 7), rook2)
+
+            # Act
+            moves = king.get_available_moves(board)
+
+            # Assert
+            assert Square.at(7, 2) in moves
+            assert Square.at(7, 6) in moves

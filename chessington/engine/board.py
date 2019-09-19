@@ -19,6 +19,7 @@ class Board:
     def __init__(self, player, board_state):
         self.current_player = Player.WHITE
         self.board = board_state
+        self.lastPieceMoved = None
 
     @staticmethod
     def empty():
@@ -55,6 +56,7 @@ class Board:
         """
         self.board[square.row][square.col] = piece
 
+
     def get_piece(self, square):
         """
         Retrieves the piece from the given square of the board.
@@ -62,7 +64,7 @@ class Board:
         if square.squareOnBoard():
             return self.board[square.row][square.col]
         else:
-            return  None
+            return None
 
     def find_piece(self, piece_to_find):
         """
@@ -85,10 +87,13 @@ class Board:
                 self.promotePawn(to_square)
             else:
                 self.set_piece(to_square, moving_piece)
+                moving_piece.hasMoved = True
 
+            self.lastPieceMoved = self.get_piece(to_square)
             self.set_piece(from_square, None)
             self.current_player = self.current_player.opponent()
 
     def promotePawn(self, square):
         player = self.current_player
-        self.set_piece(square, Queen(player))
+        new_piece = Queen(player)
+        self.set_piece(square, new_piece)
