@@ -218,3 +218,21 @@ class King(Piece):
         isKing = True
         moveList = self.get_linear_moves(board, self.vectors, isKing)
         return moveList
+
+    # def checkCastling(self, board):
+    #     if self.hasMoved == True:
+    #         return []
+    # 
+    #     row = board.find_piece(self).row
+    #     leftCorner = Square.at(row, 0)
+    #     rightCorner = Square.at(row, 7)
+    #     if leftCorner.isEmpty(board) or rightCorner.isEmpty(board):
+    #         return []
+    #
+    #     leftRook = board.get_piece(leftCorner)
+    #     leftList = self.checkLeftRook(board, leftRook)
+    #
+    #
+    # def checkLeftRook(self, board, leftRook, row):
+    #     if leftRook.hasMoved:
+    #         return []
