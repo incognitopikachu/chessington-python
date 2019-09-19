@@ -1,6 +1,6 @@
 from chessington.engine.board import Board
 from chessington.engine.data import Player, Square
-from chessington.engine.pieces import Pawn, Rook
+from chessington.engine.pieces import Pawn, Rook, Queen
 
 class TestRooks:
 
@@ -412,3 +412,20 @@ class TestPawns:
         # Assert
         assert Square.at(2, 3) not in moves
         assert Square.at(2, 5) not in moves
+
+    @staticmethod
+    def test_white_pawn_gets_promoted():
+        # Arrange
+        board = Board.empty()
+        pawn = Pawn(Player.WHITE)
+        starting_square = Square.at(6, 4)
+        board.set_piece(starting_square, pawn)
+
+        intermediate_square = Square.at(7, 4)
+        pawn.move_to(board, intermediate_square)
+        piece = board.get_piece(intermediate_square)
+        # Act
+        moves = piece.get_available_moves(board)
+
+        # Assert
+        assert isinstance(piece, Queen)

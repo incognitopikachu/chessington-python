@@ -80,6 +80,15 @@ class Board:
         """
         moving_piece = self.get_piece(from_square)
         if moving_piece is not None and moving_piece.player == self.current_player:
-            self.set_piece(to_square, moving_piece)
+
+            if isinstance(moving_piece, Pawn) and to_square.row == 7 or 0:
+                self.promotePawn(to_square)
+            else:
+                self.set_piece(to_square, moving_piece)
+
             self.set_piece(from_square, None)
             self.current_player = self.current_player.opponent()
+
+    def promotePawn(self, square):
+        player = self.current_player
+        self.set_piece(square, Queen(player))

@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 
 from chessington.engine.data import Player, Square
 
+
 class Piece(ABC):
     """
     An abstract base class from which all pieces inherit.
@@ -25,8 +26,10 @@ class Piece(ABC):
         """
         Move this piece to the given square on the board.
         """
+        player = self.player
         current_square = board.find_piece(self)
         board.move_piece(current_square, new_square)
+
 
     def position(self, board):
         return board.find_piece(self)
@@ -64,6 +67,8 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
+    # todo add pawn promotion
+    # todo add en pessant
 
     def GetPotentialCaptureSquares(self, direction, current_pos, board):
         potentialCaptureSquares = []
@@ -103,7 +108,6 @@ class Pawn(Piece):
 
         return moveList
 
-
     def FowardMoves(self, board, current_pos, direction,  start_row):
         moveList = []
         next_square = Square.at(current_pos.row + direction, current_pos.col)
@@ -115,6 +119,14 @@ class Pawn(Piece):
                 second_square) is None and current_pos.row == start_row:
             moveList.append(second_square)
         return moveList
+
+    def move_to(self, board, new_square):
+        """
+        Move this piece to the given square on the board.
+        """
+        current_square = board.find_piece(self)
+        board.move_piece(current_square, new_square)
+
 
 class Knight(Piece):
     """
@@ -170,9 +182,8 @@ class King(Piece):
     A class representing a chess king.
     """
     vectors = Queen.vectors
-
+    # todo add castling
     def get_available_moves(self, board):
         isKing = True
         moveList = self.get_linear_moves(board, self.vectors, isKing)
-        # todo need to stop king going into check
         return moveList
