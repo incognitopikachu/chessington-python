@@ -151,7 +151,12 @@ class Pawn(Piece):
             self.enPassant = True
         else:
             self.enPassant = False
-            
+
+        # delete piece if performing en pessant
+        if current_square.col - new_square.col == 1 or current_square.col - new_square.col == -1:
+            if new_square.isEmpty:
+                board.set_piece(Square.at(current_square.row, new_square.col), None)
+
         board.move_piece(current_square, new_square)
 
 
