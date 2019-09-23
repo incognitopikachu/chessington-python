@@ -105,35 +105,28 @@ class Pawn(Piece):
         current_pos = board.find_piece(self)
         fowardMoveList = self.FowardMoves(board, current_pos, direction, start_row)
         captureSquares = self.GetPotentialCaptureSquares(direction, current_pos, board)
-        captureSquares =  self.ValidateCaptureSquares(captureSquares, board)
-        moveList = fowardMoveList + captureSquares + self.checkEnPessant(board)
+        captureSquares = self.ValidateCaptureSquares(captureSquares, board)
+        moveList = fowardMoveList + captureSquares + self.checkEnPessant(board, current_pos)
 
         return moveList
 
-    def checkEnPessant(self, board):
-
+    def checkEnPessant(self, board, current_square):
+        lastPieceSquare = board.find_piece(board.lastPieceMoved)
         lastPiece = board.lastPieceMoved
 
-        if not isinstance(lastPiece, Pawn):
+        if not isinstance(lastPiece, Pawn) or not isinstance(self, Pawn) or not lastPieceSquare.squareOnBoard():
             return []
 
-        if not lastPiece.enPassant:
+        if not lastPiece.enPassant or lastPieceSquare.row != current_square.row:
             return []
 
-        current_square = board.find_piece(self)
-        opponent_square = board.find_piece(lastPiece)
-
-        if current_square.row != opponent_square.row:
-            return []
-        if (current_square.col - opponent_square.col) != 1 or -1:
-            return []
-
-        if self.player == Player.WHITE:
-            direction = 1
-        else:
+        direction = 1
+        if board.current_player == Player.BLACK:
             direction = -1
 
-        enPessantSquare = Square.at(opponent_square.row + direction, opponent_square.col)
+        enPessantSquare = Square.at(lastPieceSquare.row + direction, lastPieceSquare.col)
+
+
 
         return [enPessantSquare]
 
@@ -156,6 +149,9 @@ class Pawn(Piece):
         current_square = board.find_piece(self)
         if current_square.row - new_square.row == 2 or -2:
             self.enPassant = True
+        else:
+            self.enPassant = False
+            
         board.move_piece(current_square, new_square)
 
 
@@ -222,7 +218,7 @@ class King(Piece):
     # def checkCastling(self, board):
     #     if self.hasMoved == True:
     #         return []
-    # 
+    #
     #     row = board.find_piece(self).row
     #     leftCorner = Square.at(row, 0)
     #     rightCorner = Square.at(row, 7)

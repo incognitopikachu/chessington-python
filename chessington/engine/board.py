@@ -54,7 +54,11 @@ class Board:
         """
         Places the piece at the given position on the board.
         """
+
         self.board[square.row][square.col] = piece
+
+        if piece != None:
+            self.lastPieceMoved = self.board[square.row][square.col]
 
 
     def get_piece(self, square):
@@ -74,7 +78,7 @@ class Board:
             for col in range(BOARD_SIZE):
                 if self.board[row][col] is piece_to_find:
                     return Square.at(row, col)
-        raise Exception('The supplied piece is not on the board')
+        raise Exception('The supplied piece is not on the board:   ' )
 
     def move_piece(self, from_square, to_square):
         """
@@ -89,9 +93,10 @@ class Board:
                 self.set_piece(to_square, moving_piece)
                 moving_piece.hasMoved = True
 
-            self.lastPieceMoved = self.get_piece(to_square)
             self.set_piece(from_square, None)
             self.current_player = self.current_player.opponent()
+
+
 
     def promotePawn(self, square):
         player = self.current_player
