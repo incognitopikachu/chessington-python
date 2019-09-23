@@ -441,9 +441,9 @@ class TestPawns:
 
         pawn2 = Pawn(Player.WHITE) # MAKE WHITE PAWN
         starting_square2 = Square.at(4, 3)
-        board.set_piece(starting_square1, pawn1)
+        board.set_piece(starting_square2, pawn2)
 
-        intermediate_square = Square.at(4, 4) #move black pawn
+        intermediate_square = Square.at(4, 4) # move black pawn
         pawn1.move_to(board, intermediate_square)
 
         # Act

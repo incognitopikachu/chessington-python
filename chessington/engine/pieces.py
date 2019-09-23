@@ -198,6 +198,7 @@ class Rook(Piece):
 
         return moveList
 
+
 class Queen(Piece):
     """
     A class representing a chess queen.
@@ -227,13 +228,24 @@ class King(Piece):
     #     row = board.find_piece(self).row
     #     leftCorner = Square.at(row, 0)
     #     rightCorner = Square.at(row, 7)
+    #
+    #
     #     if leftCorner.isEmpty(board) or rightCorner.isEmpty(board):
     #         return []
     #
     #     leftRook = board.get_piece(leftCorner)
-    #     leftList = self.checkLeftRook(board, leftRook)
+    #     rightRook = board.get_piece(rightCorner)
     #
+    #     if isinstance(leftRook, Rook) and not leftRook.hasMoved:
+    #         canCastleLeft = True
+    #     if isinstance(rightRook, Rook) and not rightRook.hasMoved:
+    #         canCastleRight = True
     #
-    # def checkLeftRook(self, board, leftRook, row):
-    #     if leftRook.hasMoved:
-    #         return []
+    #     for col in range(1, 2):
+    #         if not Square.at(row, col).isEmpty()
+    #             canCastleLeft = False
+    #
+    #     for col in range(4, 6):
+    #         if not Square.at(row, col).isEmpty()
+    #             canCastleRight = False
+
